@@ -1,0 +1,59 @@
+<div class="row">
+	<div class="col-sm-4 col-sm-offset-4">
+		<%= form_tag(college_petitions_search_path, method: "GET", class: "form-inline") do %>
+			<div class="input-group changethisone">
+				<input type="text" class="form-control" name="q" placeholder="Search <%= College.find(params[:college_id]).name %>">
+				<span class="input-group-addon">
+					<%= button_tag(type: 'submit', class: "searchbutton") do %>
+							<span class="glyphicon glyphicon-search"></span> 
+					<% end %>
+				</span>
+			</div>
+		<% end %>
+	</div>
+</div>
+
+<% if params[:q] %>
+	<h3>Results</h3>
+
+	<% if @petitions_results.count == 0 %>
+		<p>No results. Start a petition <%= link_to "here.", new_college_petition_path %></p>
+	<% else %>
+			<% @petitions_results.each do |petition| %>
+
+			      <h4><%= link_to petition.headline, college_petition_path(@college, petition) %></h4>
+			      <% if petition.anonymous = true %>
+			        <p>By <a href=/users/<%= petition.user_id %>><%= User.find(petition.user_id).firstname %> <%= User.find(petition.user_id).lastname %></a></p>
+			      <% else %>
+			        <p>By anonymous</p>
+			      <% end %>
+
+			      <%= link_to "Add idea", college_petition_path(@college, petition) %>
+			      <%= link_to "Become/recommend ally", college_petition_path(@college, petition) %>
+			      <%= link_to "Sign petition", college_petition_path(@college, petition) %>
+
+			      <p>three most popular ideas...</p>
+
+			<% end %>
+
+	<% end %>
+<% end %>
+
+<h3>Browse</h3>
+
+<% @petitions.each do |petition| %>
+
+  <h4><%= link_to petition.headline, college_petition_path(@college, petition) %></h4>
+  <% if petition.anonymous = true %>
+    <p>By <a href=/users/<%= petition.user_id %>><%= User.find(petition.user_id).firstname %> <%= User.find(petition.user_id).lastname %></a></p>
+  <% else %>
+    <p>By anonymous</p>
+  <% end %>
+
+  <%= link_to "Add idea", college_petition_path(@college, petition) %>
+  <%= link_to "Become/recommend ally", college_petition_path(@college, petition) %>
+  <%= link_to "Sign petition", college_petition_path(@college, petition) %>
+
+  <p>three most popular ideas...</p>
+
+<% end %>

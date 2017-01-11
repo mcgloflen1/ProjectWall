@@ -1,0 +1,56 @@
+<div class="row">
+	<div class="col-sm-4 col-sm-offset-4">
+		<%= form_tag(colleges_path, method: "GET", class: "form-inline") do %>
+			<div class="input-group changethisone">
+				<input type="text" class="form-control" name="q" placeholder="Enter college name">
+				<span class="input-group-addon">
+					<%= button_tag(type: 'submit', class: "searchbutton") do %>
+							<span class="glyphicon glyphicon-search"></span> 
+					<% end %>
+				</span>
+			</div>
+		<% end %>
+	</div>
+</div>
+
+<% if params[:q] %>
+	<h3>Results</h3>
+
+	<% if @colleges_results.count == 0 %>
+		<p>No results</p>
+		<p>Can't find your college? Add it <%= link_to "here.", new_college_path %></p>
+	<% else %>
+		<p>Can't find your college? Add it <%= link_to "here.", new_college_path %></p>
+		<div class="row">
+			<% @colleges_results.each do |college| %>
+				<div class="col-sm-12">
+					<h4><%= link_to college.name, college_petitions_path(college.id) %></h4>
+					<h6><%= college.city %></h6>
+					<h6><%= college.state %></h6>
+					<h6><%= college.country %></h6>
+				</div>
+			<% end %>
+		</div>
+	<% end %>
+
+<% end %>
+
+<h3>Browse</h3>
+
+<% if !params[:q] %>
+	<p>Can't find your college? Add it <%= link_to "here.", new_college_path %></p>
+<% end %>
+
+<div class="row">
+	<% @colleges.alphabetically.each do |college| %>
+		<div class="col-sm-12">
+			<h4><%= link_to college.name, college_petitions_path(college.id) %></h4>
+			<h6><%= college.city %></h6>
+			<h6><%= college.state %></h6>
+			<h6><%= college.country %></h6>
+		</div>
+	<% end %>
+	<div class="text-center">
+		<%= will_paginate @colleges %>
+	</div>
+</div>

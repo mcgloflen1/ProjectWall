@@ -1,0 +1,113 @@
+<div class="text-center">
+	<p>Petitioning <%= @petition.recipient %></p>
+	<h3><%= @petition.headline %></h3>
+	<% if @petition.anonymous == false %>
+        <p>By <a href=/users/<%= @petition.user_id %>><%= @user.firstname %> <%= @user.lastname %></a></p>
+      <% else %>
+        <p>By anonymous</p>
+      <% end %>
+</div>
+
+<div class="row">
+	<div class="col-sm-8">
+		<p><%= @petition.description %></p>
+
+		<div class="row">
+			<div class="col-sm-4">
+				<h4>Add idea</h4>
+				<p>Ideas: <%= @petition.ideas.count %></p>
+				<%= form_for [@college, @petition, Idea.new], :url => college_petition_ideas_path(@college, @petition) do |f| %>
+					<div class="form-group">
+						<%= f.text_area :ideatext, placeholder: "My idea for this is..", class: "form-control" %>
+					</div>
+					<div class="checkbox">
+						<label><%= f.check_box :anonymous %>Post as anonymous</label>
+					</div>
+					<%= f.submit "Submit", class: "btn btn-primary" %>
+				<% end %>
+			</div>
+
+			<div class="col-sm-4">
+				<h4>Become ally</h4>
+				<p>Allies: <%= @petition.alliances.count %></p>
+				<%= form_for [@college, @petition, Alliance.new], :url => college_petition_alliances_path(@college, @petition) do |f| %>
+					<div class="form-group">
+						<%= f.text_area :note, placeholder: "My note", class: "form-control" %>
+					</div>
+					<div class="checkbox">
+						<label><%= f.check_box :anonymous %>Post as anonymous</label>
+					</div>
+					<%= f.submit "Submit", class: "btn btn-primary" %>
+				<% end %>
+			</div>
+			<div class="col-sm-4">
+				<h4>Sign petition</h4>
+				<p>Signatures: <%= @petition.signatures.count %></p>
+				<%= form_for [@college, @petition, Signature.new], :url => college_petition_signatures_path(@college, @petition) do |f| %>
+					<div class="form-group">
+						<%= f.text_area :comment, placeholder: "Comment", class: "form-control" %>
+					</div>
+					<div class="checkbox">
+						<label><%= f.check_box :anonymous %>Post as anonymous</label>
+					</div>
+					<%= f.submit "Submit", class: "btn btn-primary" %>
+				<% end %>
+			</div>
+		</div>
+
+		<h4>Ideas</h4>
+		<% @ideas.each do |idea| %>
+			<% if (user_signed_in?) && (!idea.likes.where(:user_id => current_user.id).blank?) %>
+                <%= form_tag(college_petition_idea_like_path(:petition_id => @petition.id, :idea_id => idea.id, :id => idea.likes.where(:user_id => current_user.id).first.id), method: "DELETE") do %>
+                  <%= button_tag(type: 'submit', class: "heart-button") do %>
+                    <span class="glyphicon glyphicon-heart"></span>
+                  <% end %>
+                  <%= idea.likes.count %>
+                  <%= idea.ideatext %>
+                <% end %>
+              <% else %>
+                <%= form_for [@college, @petition, idea, Like.new], :url => college_petition_idea_likes_path(@college, @petition, idea) do |f| %>
+                  <%= f.hidden_field :yes, value: true %>
+                  <%= button_tag(type: 'submit', class: "heart-button") do %>
+                    <span class="glyphicon glyphicon-heart-empty"></span>
+                  <% end %>
+                <%= idea.likes.count %>
+                <%= idea.ideatext %>
+                <% end %>
+              <% end %>
+
+			<% if idea.anonymous == false %>
+		        <p><%= link_to User.find(idea.user_id).firstname + " " + User.find(idea.user_id).lastname, user_path(idea.user_id) %></p>
+		      <% else %>
+		        <p>anonymous</p>
+		      <% end %>
+        <% end %>
+        <div class="text-center">
+	        <%= will_paginate @ideas %>
+	    </div>
+
+	</div>
+	<div class="col-sm-4">
+		<h4>Share this petition</h4>
+		insert share thing here
+		<h4>Allies</h4>
+		<% @alliances.each do |alliance| %>
+			<% if alliance.anonymous == false %>
+				<p><%= link_to User.find(alliance.user_id).firstname + " " + User.find(alliance.user_id).lastname, user_path(alliance.user_id) %>, <%= User.find(alliance.user_id).associated_with %></p>
+				<p><%= alliance.note %></p>
+			<% else %>
+				<p>anonymous</p>
+			<% end %>
+        <% end %>
+
+        <h4>Signatures</h4>
+        <% @signatures.each do |signature| %>
+			<p><%= signature.comment %></p>
+			<% if signature.anonymous == false %>
+				<p><%= link_to User.find(signature.user_id).firstname + " " + User.find(signature.user_id).lastname, user_path(signature.user_id) %>, <%= User.find(signature.user_id).associated_with %></p>
+			<% else %>
+		        <p>anonymous</p>
+		    <% end %>
+        <% end %>
+	</div>
+</div>

@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  college_id: 1
+  user_id: 1
+  headline: MyString
+  description: MyText
+  recipient: MyString
+  recipient_email: MyString
+  goal: 1
+  anonymous: false
+
+two:
+  college_id: 1
+  user_id: 1
+  headline: MyString
+  description: MyText
+  recipient: MyString
+  recipient_email: MyString
+  goal: 1
+  anonymous: false

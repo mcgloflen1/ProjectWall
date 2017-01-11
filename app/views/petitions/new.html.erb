@@ -1,0 +1,46 @@
+<h3 class="text-center">Start a Petition</h3>
+
+<%= form_for [@college, @petition] do |f| %>
+	<div class="form-group">
+		<label>Headline</label>
+		<%= f.text_field :headline, placeholder: "Call-to-action", class: "form-control" %>
+	</div>
+
+	<div class="form-group">
+		<label>Description</label>
+		<%= f.text_area :description, placeholder: "Tell others about this issue", class: "form-control" %>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-6">
+			<div class="form-group">
+				<label>Recipient</label>
+				<%= f.text_field :recipient, placeholder: "Who are you petitioning? Faculty, campus org, individual, etc", class: "form-control" %>
+			</div>
+		</div>
+		<div class="col-sm-6">
+			<div class="form-group">
+				<label>Email of recipient</label>
+				<%= f.email_field :recipient_email, placeholder: "Email of recipient", class: "form-control" %>
+			</div>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label>Signature goal</label>
+		<%= f.number_field :goal, placeholder: "Petition will be sent when it reaches this many signatures", class: "form-control" %>
+	</div>
+
+	<div class="form-group">
+		    <label>Tags</label>
+		    <%= f.text_field :tag_list, placeholder: "Ex: race, lgbtq... (optional)", class: "form-control" %>
+		  </div>
+
+	<div class="checkbox">
+		<label><%= f.check_box :anonymous %>I would like to remain anonymous</label>
+	</div>
+
+	<a href="<%= college_petitions_path %>" class="btn btn-default">Cancel</a>
+	<%= f.submit "Submit", class: "btn btn-primary" %>
+
+<% end %>

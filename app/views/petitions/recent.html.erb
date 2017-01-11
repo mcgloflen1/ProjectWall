@@ -1,0 +1,72 @@
+<div class="row">
+  <div class="col-sm-8">
+
+    <ul class="text-center list-inline">
+      <li><%= link_to "Trending", college_petitions_path %></li>
+      <li><%= link_to "Popular", college_petitions_popular_path %></li>
+      <li class="active">Recent</li>
+    </ul>
+
+    <% @petitions.each do |petition| %>
+
+        <h4><%= link_to petition.headline, college_petition_path(@college, petition) %></h4>
+        <% if petition.anonymous == false %>
+          <p>By <a href=/users/<%= petition.user_id %>><%= User.find(petition.user_id).firstname %> <%= User.find(petition.user_id).lastname %></a></p>
+        <% else %>
+          <p>By anonymous</p>
+        <% end %>
+
+        <div class="col-sm-4">
+          <p>Ideas: <%= petition.ideas.count %></p>
+          <p><%= link_to "Add idea", college_petition_path(@college, petition) %><p>
+        </div>
+        <div class="col-sm-4">
+          <p>Allies: <%= petition.alliances.count %></p>
+          <p><%= link_to "Become/recommend ally", college_petition_path(@college, petition) %></p>
+        </div>
+        <div class="col-sm-4">
+          <p>Signatures: <%= petition.signatures.count %></p>
+          <p><%= link_to "Sign petition", college_petition_path(@college, petition) %></p>
+        </div>
+
+        <div class="col-sm-11 col-sm-offset-1">
+          <% petition.ideas.popular.limit(3).each do |idea| %>
+          <%= form_for [@college, @petition, idea, Like.new], :url => college_petition_idea_likes_path(@college, petition, idea) do |f| %>
+              <%= f.hidden_field :yes, value: true %>
+              <%= button_tag(type: 'submit', class: "heart-button") do %>
+                <span class="glyphicon glyphicon-heart-empty"></span>
+              <% end %>
+              <%= idea.likes.count %>
+              <%= idea.ideatext %>
+            <% end %>
+            
+            <% end %>
+        </div>
+
+      <% end %>
+
+  </div>
+
+  <div class="col-sm-4">
+    <%= link_to "Start a petition", new_college_petition_path %>
+    <h4>Popular Topics</h4>
+    <div class="row">
+      <div class="col-sm-6">
+        <ul class="list-inline">
+          <li class="active">example</li>
+          <li><a href="/">example</a></li>
+          <li><a href="/">example</a></li>
+        </ul>
+      </div>
+      <div class="col-sm-6">
+        <ul class="list-inline">
+          <li class="active">example</li>
+          <li><a href="/">example</a></li>
+          <li><a href="/">example</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+  

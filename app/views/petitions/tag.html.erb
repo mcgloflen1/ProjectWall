@@ -1,0 +1,76 @@
+<div class="row">
+  <div class="col-sm-8">
+  <h3><%= params[:name] %></h3>
+
+    <ul class="text-center list-inline">
+      <li class="active">Trending</li>
+      <li><%= link_to "Popular", college_petitions_popular_path %></li>
+      <li><%= link_to "Recent", college_petitions_recent_path %></li>
+    </ul>
+
+    <% @petitions.each do |petition| %>
+
+        <h4><%= link_to petition.headline, college_petition_path(@college, petition) %></h4>
+        <% if petition.anonymous == false %>
+          <p>By <a href=/users/<%= petition.user_id %>><%= User.find(petition.user_id).firstname %> <%= User.find(petition.user_id).lastname %></a></p>
+        <% else %>
+          <p>By anonymous</p>
+        <% end %>
+
+        <div class="col-sm-4">
+          <p>Ideas: <%= petition.ideas.count %></p>
+          <p><%= link_to "Add idea", college_petition_path(@college, petition) %><p>
+        </div>
+        <div class="col-sm-4">
+          <p>Allies: <%= petition.alliances.count %></p>
+          <p><%= link_to "Become/recommend ally", college_petition_path(@college, petition) %></p>
+        </div>
+        <div class="col-sm-4">
+          <p>Signatures: <%= petition.signatures.count %></p>
+          <p><%= link_to "Sign petition", college_petition_path(@college, petition) %></p>
+        </div>
+
+        <div class="col-sm-11 col-sm-offset-1">
+          <% petition.ideas.popular.limit(3).each do |idea| %>
+
+              <% if !idea.likes.where(:user_id => current_user.id).blank? %>
+                <%= form_tag(college_petition_idea_like_path(:petition_id => petition.id, :idea_id => idea.id, :id => idea.likes.where(:user_id => current_user.id).first.id), method: "DELETE") do %>
+                  <%= button_tag(type: 'submit', class: "heart-button") do %>
+                    <span class="glyphicon glyphicon-heart"></span>
+                  <% end %>
+                  <%= idea.likes.count %>
+                  <%= idea.ideatext %>
+                <% end %>
+              <% else %>
+                <%= form_for [@college, @petition, idea, Like.new], :url => college_petition_idea_likes_path(@college, petition, idea) do |f| %>
+                  <%= f.hidden_field :yes, value: true %>
+                  <%= button_tag(type: 'submit', class: "heart-button") do %>
+                    <span class="glyphicon glyphicon-heart-empty"></span>
+                  <% end %>
+                <%= idea.likes.count %>
+                <%= idea.ideatext %>
+                <% end %>
+              <% end %>
+            
+          <% end %>
+        </div>
+
+      <% end %>
+      <div class="text-center">
+        <%= will_paginate @petitions %>
+      </div>
+
+  </div>
+
+  <div class="col-sm-4">
+    <%= link_to "Start a petition", new_college_petition_path %>
+    <h4>Popular Topics</h4>
+    <div class="row">
+      <% @popular_tags.each do |tag| %>
+      <div class="col-sm-6">
+        <p><%= link_to tag, college_petitions_tag_path(:name => tag.name) %></p>
+      </div>
+      <% end %>
+    </div>
+  </div>
+</div>

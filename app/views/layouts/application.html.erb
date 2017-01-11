@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ProjectWall</title>
+    <%= csrf_meta_tags %>
+
+	    <!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+	<link href='https://fonts.googleapis.com/css?family=Fredoka+One' rel='stylesheet' type='text/css'>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+
+    	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+  </head>
+
+  <body class="main-body">
+	  <nav class="navbar navbar-default navbar-fixed-top">
+	  	<div class="container">
+	  		<!-- Brand and toggle get grouped for better mobile display -->
+		    <div class="navbar-header">
+		      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+		        <span class="sr-only">Toggle navigation</span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		      </button>
+		      <a class="navbar-brand" href=<%= root_path %>>Common Room</a>
+		    </div>
+
+		    <!-- Collect the nav links, forms, and other content for toggling -->
+		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+		      <ul class="nav navbar-nav">
+		        <li><a href=<%= colleges_path %>>Find Your College</a></li>
+		        <li><a href="/">Our Mission</a></li>
+		        <li><a href="/">Resources</a></li>
+		      </ul>
+
+		      <% if user_signed_in? %>
+			      <ul class="nav navbar-nav navbar-right">
+			        <li class="dropdown">
+			          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span> <span class="caret"></span></a>
+			          <ul class="dropdown-menu">
+			          <% if current_user.admin? %>
+			          	<li><%= link_to "Admin Dashboard", user_path(current_user.id) %></li>
+			          <% else %>
+			            <li><%= link_to "Profile", user_path(current_user.id) %></li>
+			            <li><%= link_to "My Alliances", user_path(current_user.id) %></li>
+			            <li><%= link_to "My Petitions", user_path(current_user.id) %></li>
+			          <% end %>
+			            <li><%= link_to "Settings", edit_user_registration_path(current_user.id) %></li>
+			            <li role="separator" class="divider"></li>
+                        <li><%= link_to "Log Out", destroy_user_session_path, method: "DELETE" %></li>
+			          </ul>
+			        </li>
+			      </ul>
+			   <% end %>
+
+			   <% if !user_signed_in? %>
+			      <ul class="nav navbar-nav navbar-right">
+			        <li><a href="/users/sign_in">Log In</a></li>
+			      </ul>
+			   <% end %>
+
+		    </div><!-- /.navbar-collapse -->
+	  	</div>
+	  </nav>
+
+	  <div class="container">
+
+	  	<%= yield %>
+
+		  	<div class="row">
+				<div class="col-sm-4 col-sm-offset-4">
+					<%= form_tag(colleges_path, method: "GET", class: "form-inline") do %>
+						<div class="input-group changethisone">
+							<input type="text" class="form-control" name="q" placeholder="Enter college name">
+							<span class="input-group-addon">
+								<%= button_tag(type: 'submit', class: "searchbutton") do %>
+										<span class="glyphicon glyphicon-search"></span> 
+								<% end %>
+							</span>
+						</div>
+					<% end %>
+				</div>
+			</div>
+
+	  </div>
+
+	  <div class="footer">
+	  	<div class="container">
+	  		<div class="row">
+	  			<div class="col-sm-12">
+	  				<p class="text-muted">&copy; <a href=<%= root_path %>>Common Room</a>, 2017</p>
+	  			</div>
+	  		</div>
+	  	</div>
+	  </div>
+
+  </body>
+</html>

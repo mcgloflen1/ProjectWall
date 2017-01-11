@@ -1,0 +1,56 @@
+<h3>Edit Profile</h3>
+
+<%= form_for @user, method: "PUT" do |f| %>
+
+<div class="form-group">
+	<label>First name</label>
+	<%= f.text_field :firstname, placeholder: @user.firstname, class: "form-control" %>
+</div>
+
+<div class="form-group">
+	<label>Last name</label>
+	<%= f.text_field :lastname, placeholder: @user.lastname, class: "form-control" %>
+</div>
+
+<div class="form-group">
+	<label>Association</label>
+	<%= f.text_field :associated_with, placeholder: @user.associated_with, class: "form-control" %>
+</div>
+
+<div class="form-group">
+	<label>Street address</label>
+	<%= f.text_field :streetaddress, placeholder: @user.streetaddress, class: "form-control" %>
+</div>
+
+<div class="form-group">
+	<label>City</label>
+	<%= f.text_field :city, placeholder: @user.city, class: "form-control" %>
+</div>
+
+<div class="row">
+	<div class="col-sm-6">
+		<div class="form-group">
+			<label>State</label>
+			<%= f.text_field :state, placeholder: @user.state, class: "form-control" %>
+		</div>
+		<div class="form-group">
+			<label>Zip code</label>
+			<%= f.number_field :zipcode, placeholder: @user.zipcode, class: "form-control" %>
+		</div>
+	</div>
+	<div class="col-sm-6">
+		<div class="form-group">
+			<label>Country</label>
+			<%= f.text_field :country, placeholder: @user.country, class: "form-control" %>
+		</div>
+		<div class="form-group">
+			<label>Language</label>
+			<%= f.text_field :language, placeholder: @user.language, class: "form-control" %>
+		</div>
+	</div>
+</div>
+
+<%= f.submit "Update", class: "btn btn-primary" %>
+<%= link_to "Cancel", :back %>
+
+<% end %>

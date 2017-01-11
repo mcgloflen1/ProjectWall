@@ -1,0 +1,81 @@
+<% if user_signed_in? %>
+	<% if current_user.admin? %>
+		<h3>Admin Dashboard</h3>
+
+		<div class="panel panel-default">
+  			<div class="panel-heading">Colleges pending approval</div>
+				<table class="table">
+					<thead>
+						<tr>
+							<th>id</th>
+							<th>created_at</th>
+							<th>created_by</th>
+							<th>name</th>
+							<th>city</th>
+							<th>state</th>
+							<th>country</th>
+							<th>edit</th>
+							<th>approve</th>
+						</tr>
+					</thead>
+					<tbody>
+						<% @colleges_admin.each do |college| %>
+						<tr>
+							<th><%= college.id %></th>
+							<td><%= college.created_at.strftime('%m-%d-%Y %H:%M') %></td>
+							<td><%= link_to college.created_by, user_path(college.created_by) %></td>
+							<td><%= college.name %></td>
+							<td><%= college.city %></td>
+							<td><%= college.state %></td>
+							<td><%= college.country %></td>
+							<td><%= link_to "Edit", edit_college_path %></td>
+							<td>
+								<%= form_for college, method: "PUT" do |college| %>
+									<%= college.hidden_field :college_approval, value: true %>
+    								<%= college.submit 'Approve', class: "btn btn-warning" %>
+    							<% end %>
+							</td>
+						</tr>
+						<% end %>
+					</tbody>
+				</table>
+			</div>
+	<% else %>
+		<div class="text-center">
+			<h3><%= @user.firstname %> <%= @user.lastname %></h3>
+			<p><%= @user.associated_with %></p>
+			<%= link_to "Edit Profile", edit_user_path %>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-8">
+				<div class="text-center">
+					<ul class="list-inline">
+						<li>Ally</li>
+						<li>Contributed to</li>
+						<li>Started</li>
+					</ul>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<h4>Your Allies</h4>
+				<p>add allies here</p>
+			</div>
+		</div>
+	<% end %>
+
+	<% if !user_signed_in? %>
+		<div class="text-center">
+			<h3><%= @user.firstname %> <%= @user.lastname %></h3>
+			<p><%= @user.associated_with %></p>
+		</div>
+
+		<div class="text-center">
+			<ul class="list-inline">
+				<li>Ally</li>
+				<li>Contributed to</li>
+				<li>Started</li>
+			</ul>
+		</div>
+	<% end %>
+<% end %>

@@ -1,0 +1,65 @@
+
+	<div class="jumbotron">
+		<h1 class="text-center">Demand justice on your campus.</h1>
+		<p class="text-center">Work with allies to reduce marginalization based on race, ethnicity, gender, sexuality, religion, and class.</p>
+
+		<div class="row">
+			<div class="col-sm-4 col-sm-offset-4">
+				<%= form_tag(colleges_path, method: "GET", class: "form-inline") do %>
+					<div class="input-group changethisone">
+						<input type="text" class="form-control" name="q" placeholder="Enter college name">
+						<span class="input-group-addon">
+							<%= button_tag(type: 'submit', class: "searchbutton") do %>
+			  					<span class="glyphicon glyphicon-search"></span> 
+							<% end %>
+						</span>
+					</div>
+				<% end %>
+			</div>
+		</div>
+
+
+		<div class="text-center">or</div>
+		<div class="text-center"><a href=<%= colleges_path %>>browse</a></div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-12">
+			<h3>How It Works</h3>
+		</div>
+	</div>
+	<p>get graphic designer to make an image of this</p>
+	<div class="row">
+		<div class="col-sm-4">
+			Add ideas
+		</div>
+		<div class="col-sm-4">
+			Become or recommend allies
+		</div>
+		<div class="col-sm-4">
+			Sign petitions
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-12">
+			<h3>Our Mission</h3>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-4">
+			<h4 class="text-center">Join</h4>
+		</div>
+		<div class="col-sm-4">
+			<h4 class="text-center">Educate</h4>
+		</div>
+		<div class="col-sm-4">
+			<h4 class="text-center">Reform</h4>
+		</div>
+	</div>
+
+
+
+
+
+
